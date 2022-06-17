@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "nodemon ./src/server.js",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "migrate": "node-pg-migrate"
   },
   "author": "Fikri Yusrihan",
   "license": "ISC",
