@@ -1,0 +1,26 @@
+{
+  "name": "open-music",
+  "version": "1.0.0",
+  "description": "Dicoding back-end fundamental application course submission",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon ./src/server.js",
+    "lint": "eslint ./src"
+  },
+  "author": "Fikri Yusrihan",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2",
+    "dotenv": "^16.0.1",
+    "joi": "^17.6.0",
+    "nanoid": "^4.0.0",
+    "node-pg-migrate": "^6.2.1",
+    "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.17.0",
+    "eslint-config-google": "^0.14.0",
+    "nodemon": "^2.0.16"
+  }
+}
