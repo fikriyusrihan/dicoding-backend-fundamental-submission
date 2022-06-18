@@ -1,6 +1,6 @@
+/* eslint-disable require-jsdoc */
 import ClientError from '../../exceptions/ClientError.js';
 
-/* eslint-disable require-jsdoc */
 class AlbumHandler {
   constructor(service, validator) {
     this._service = service;
