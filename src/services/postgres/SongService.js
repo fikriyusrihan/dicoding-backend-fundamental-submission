@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 import {nanoid} from 'nanoid';
@@ -31,20 +30,24 @@ class SongService {
   }
 
   async getSongs(title, performer) {
+    // eslint-disable-next-line quotes
     let text = "SELECT id, title, performer FROM songs";
     const values = [];
 
     if (title) {
+      // eslint-disable-next-line quotes
       text = text + " WHERE title ILIKE '%' || $1 || '%'";
       values.push(title);
     }
 
     if (!title && performer) {
+      // eslint-disable-next-line quotes
       text = text + " WHERE performer ILIKE '%' || $1 || '%'";
       values.push(performer);
     }
 
     if (title && performer) {
+      // eslint-disable-next-line quotes
       text = text + " AND performer ILIKE '%' || $2 || '%'";
       values.push(performer);
     }

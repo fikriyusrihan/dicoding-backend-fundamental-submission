@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 import ClientError from '../../exceptions/ClientError.js';
 
@@ -18,8 +17,18 @@ class SongHandler {
     try {
       this._validator.validateSongPayload(request.payload);
 
-      const {title, year, genre, performer, duration = null, albumId = null} = request.payload;
-      const songId = await this._service.addSong({title, year, genre, performer, duration, albumId});
+      const {
+        title,
+        year,
+        genre,
+        performer,
+        duration = null,
+        albumId = null,
+      } = request.payload;
+
+      const songId = await this._service.addSong(
+          {title, year, genre, performer, duration, albumId},
+      );
 
       const response = h.response({
         status: 'success',
@@ -105,9 +114,18 @@ class SongHandler {
     try {
       this._validator.validateSongPayload(request.payload);
       const {id} = request.params;
-      const {title, year, genre, performer, duration = null, albumId = null} = request.payload;
+      const {
+        title,
+        year,
+        genre,
+        performer, duration = null,
+        albumId = null,
+      } = request.payload;
 
-      await this._service.editSongById(id, {title, year, genre, performer, duration, albumId});
+      await this._service.editSongById(
+          id,
+          {title, year, genre, performer, duration, albumId},
+      );
 
       return {
         status: 'success',
