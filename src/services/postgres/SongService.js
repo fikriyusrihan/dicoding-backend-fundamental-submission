@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 import {nanoid} from 'nanoid';
@@ -29,8 +30,31 @@ class SongService {
     return result.rows[0].id;
   }
 
-  async getSongs() {
-    const result = await this._pool.query('SELECT id, title, performer FROM songs');
+  async getSongs(title, performer) {
+    let text = "SELECT id, title, performer FROM songs";
+    const values = [];
+
+    if (title) {
+      text = text + " WHERE title ILIKE '%' || $1 || '%'";
+      values.push(title);
+    }
+
+    if (!title && performer) {
+      text = text + " WHERE performer ILIKE '%' || $1 || '%'";
+      values.push(performer);
+    }
+
+    if (title && performer) {
+      text = text + " AND performer ILIKE '%' || $2 || '%'";
+      values.push(performer);
+    }
+
+    const query = {
+      text: text,
+      values: values,
+    };
+
+    const result = await this._pool.query(query);
     return result.rows;
   }
 
