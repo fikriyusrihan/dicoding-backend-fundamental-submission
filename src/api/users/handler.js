@@ -39,7 +39,7 @@ class UsersHandler {
 
       const response = h.response({
         status: 'error',
-        message: 'Maaf, server kami mengalami kegagalan',
+        message: 'Maaf, terjadi kesalahan pada server',
       });
       response.code(500);
       console.error(error);
