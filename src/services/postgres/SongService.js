@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 import {nanoid} from 'nanoid';
 import pg from 'pg';
@@ -78,7 +77,16 @@ class SongService {
 
   async editSongById(id, {title, year, genre, performer, duration, albumId}) {
     const query = {
-      text: 'UPDATE songs SET title = $1, year = $2, genre = $3, performer = $4, duration = $5, album_id = $6 WHERE id = $7 RETURNING id',
+      text: `UPDATE songs 
+      SET
+      title = $1,
+      year = $2,
+      genre = $3,
+      performer = $4,
+      duration = $5,
+      album_id = $6 
+      WHERE id = $7
+      RETURNING id`,
       values: [title, year, genre, performer, duration, albumId, id],
     };
 
