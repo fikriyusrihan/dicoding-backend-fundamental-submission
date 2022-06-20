@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 import ClientError from '../../exceptions/ClientError.js';
 
-class SongHandler {
+class SongsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
@@ -180,4 +180,4 @@ class SongHandler {
   }
 }
 
-export default SongHandler;
+export default SongsHandler;

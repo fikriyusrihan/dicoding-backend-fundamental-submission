@@ -5,23 +5,23 @@ import Hapi from '@hapi/hapi';
 
 // Albums plugin
 import albums from './api/albums/index.js';
-import AlbumService from './services/postgres/AlbumService.js';
-import AlbumValidator from './validator/albums/index.js';
+import AlbumsService from './services/postgres/AlbumsService.js';
+import AlbumsValidator from './validator/albums/index.js';
 
 // Songs plugin
 import songs from './api/songs/index.js';
-import SongService from './services/postgres/SongService.js';
-import SongValidator from './validator/songs/index.js';
+import SongsService from './services/postgres/SongsService.js';
+import SongsValidator from './validator/songs/index.js';
 
 // Users plugin
 import users from './api/users/index.js';
 import UsersService from './services/postgres/UsersService.js';
-import UserValidator from './validator/users/index.js';
+import UsersValidator from './validator/users/index.js';
 
 const init = async () => {
-  const albumService = new AlbumService();
-  const songService = new SongService();
-  const userService = new UsersService();
+  const albumsService = new AlbumsService();
+  const songsService = new SongsService();
+  const usersService = new UsersService();
 
   const server = Hapi.server({
     port: process.env.PORT,
@@ -37,22 +37,22 @@ const init = async () => {
     {
       plugin: albums,
       options: {
-        service: albumService,
-        validator: AlbumValidator,
+        service: albumsService,
+        validator: AlbumsValidator,
       },
     },
     {
       plugin: songs,
       options: {
-        service: songService,
-        validator: SongValidator,
+        service: songsService,
+        validator: SongsValidator,
       },
     },
     {
       plugin: users,
       options: {
-        service: userService,
-        validator: UserValidator,
+        service: usersService,
+        validator: UsersValidator,
       },
     },
   ]);

@@ -1,13 +1,13 @@
-import UserPayloadScheme from './schema.js';
+import UsersPayloadScheme from './schema.js';
 import InvariantError from '../../exceptions/InvariantError.js';
 
-const UserValidator = {
+const UsersValidator = {
   validateUserPayload: (payload) => {
-    const validationResult = UserPayloadScheme.validate(payload);
+    const validationResult = UsersPayloadScheme.validate(payload);
     if (validationResult.error) {
       throw new InvariantError(validationResult.error.message);
     }
   },
 };
 
-export default UserValidator;
+export default UsersValidator;

@@ -1,8 +1,8 @@
 import Joi from 'joi';
 
-const AlbumPayloadScheme = Joi.object({
+const AlbumsPayloadScheme = Joi.object({
   name: Joi.string().required(),
   year: Joi.number().required(),
 });
 
-export default AlbumPayloadScheme;
+export default AlbumsPayloadScheme;

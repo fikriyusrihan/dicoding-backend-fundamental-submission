@@ -1,13 +1,13 @@
 import routes from './routes.js';
-import SongHandler from './handler.js';
+import SongsHandler from './handler.js';
 
-const songPlugin = {
+const songsPlugin = {
   name: 'songs',
   version: '1.0.0',
   register: async (server, {service, validator}) => {
-    const songHandler = new SongHandler(service, validator);
+    const songHandler = new SongsHandler(service, validator);
     server.route(routes(songHandler));
   },
 };
 
-export default songPlugin;
+export default songsPlugin;
