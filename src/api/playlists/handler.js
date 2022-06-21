@@ -29,7 +29,7 @@ class PlaylistsHandler {
       const {id: credentialId} = request.auth.credentials;
 
       const playlistId =
-        await this._playlistsService.addPlaylist({name, owner: credentialId});
+        await this._playlistsService.addPlaylist(name, credentialId);
 
       const response = h.response({
         status: 'success',
@@ -167,7 +167,7 @@ class PlaylistsHandler {
       const {id} = request.params;
       const {id: credentialId} = request.auth.credentials;
       const playlist =
-        await this._playlistsService.getPlaylistSongsById(credentialId, id);
+        await this._playlistsService.getPlaylistSongsById(id, credentialId);
 
       return {
         status: 'success',
