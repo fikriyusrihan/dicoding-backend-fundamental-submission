@@ -8,8 +8,9 @@ import AuthorizationError from '../../exceptions/AuthorizationError.js';
 const {Pool} = pg;
 
 class PlaylistsService {
-  constructor() {
+  constructor(collaborationsService) {
     this._pool = new Pool();
+    this._collaborationsService = collaborationsService;
   }
 
   async addPlaylist(name, owner) {
@@ -29,14 +30,24 @@ class PlaylistsService {
     return result.rows[0].id;
   }
 
-  async getPlaylists(owner) {
+  async getPlaylists(userId) {
     const query = {
       text: `SELECT p.id, p.name, u.username
       FROM playlists p
-      INNER JOIN users u 
+      INNER JOIN users u
       ON p.owner = u.id
-      WHERE p.owner = $1`,
-      values: [owner],
+      WHERE p.owner = $1
+
+      UNION
+      
+      SELECT p.id, p.name, u.username
+      FROM collaborations c
+      INNER JOIN playlists p
+      ON c.playlist_id = p.id
+      INNER JOIN users u
+      ON p.owner = u.id
+      WHERE c.user_id = $1`,
+      values: [userId],
     };
 
     const result = await this._pool.query(query);
@@ -70,8 +81,8 @@ class PlaylistsService {
     }
   }
 
-  async getPlaylistSongsById(playlistId, owner) {
-    await this.verifyPlaylistOwner(playlistId, owner);
+  async getPlaylistSongsById(playlistId, userId) {
+    await this.verifyPlaylistAccess(playlistId, userId);
 
     const queryGetPlaylist = {
       text: `SELECT p.id, p.name, u.username
@@ -140,6 +151,24 @@ class PlaylistsService {
 
     if (playlist.owner !== userId) {
       throw new AuthorizationError('Anda tidak memiliki akses resource ini');
+    }
+  }
+
+  async verifyPlaylistAccess(playlistId, userId) {
+    try {
+      await this.verifyPlaylistOwner(playlistId, userId);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+
+      try {
+        await this._collaborationsService.verifyCollaborator(
+            playlistId, userId,
+        );
+      } catch (error) {
+        throw error;
+      }
     }
   }
 }

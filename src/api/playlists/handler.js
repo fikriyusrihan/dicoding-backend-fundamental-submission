@@ -131,7 +131,7 @@ class PlaylistsHandler {
       const {id: credentialId} = request.auth.credentials;
 
       await this._songsService.getSongById(songId);
-      await this._playlistsService.verifyPlaylistOwner(
+      await this._playlistsService.verifyPlaylistAccess(
           playlistId, credentialId,
       );
       await this._playlistsService.addSongToPlaylist(playlistId, songId);
@@ -143,6 +143,7 @@ class PlaylistsHandler {
       response.code(201);
       return response;
     } catch (error) {
+      console.log(error);
       if (error instanceof ClientError) {
         const response = h.response({
           status: 'fail',
@@ -203,7 +204,7 @@ class PlaylistsHandler {
       const {songId} = request.payload;
       const {id: credentialId} = request.auth.credentials;
 
-      await this._playlistsService.verifyPlaylistOwner(id, credentialId);
+      await this._playlistsService.verifyPlaylistAccess(id, credentialId);
       await this._playlistsService.deleteSongFromPlaylist(id, songId);
 
       return {
