@@ -160,7 +160,8 @@ class PlaylistsService {
       ON a.song_id = s.id
       INNER JOIN users u
       ON a.user_id = u.id
-      WHERE playlist_id = $1`,
+      WHERE playlist_id = $1
+      ORDER BY a.time ASC`,
       values: [playlistId],
     };
 
