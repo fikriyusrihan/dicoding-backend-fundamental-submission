@@ -12,3 +12,7 @@ This repository is created for sharing, documentation, and education purposes on
     * Hapi Plugin
     * Data Validation with Joi
     * PostgreSQL
+* In the second submission: 
+    * Authentication and Authorization with Jwt
+    * Node-pg-migrate
+    * Database normalization
