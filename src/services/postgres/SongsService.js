@@ -6,7 +6,7 @@ import NotFoundError from '../../exceptions/NotFoundError.js';
 
 const {Pool} = pg;
 
-class SongService {
+class SongsService {
   constructor() {
     this._pool = new Pool();
   }
@@ -111,4 +111,4 @@ class SongService {
   }
 }
 
-export default SongService;
+export default SongsService;
