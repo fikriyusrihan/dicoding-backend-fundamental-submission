@@ -7,8 +7,9 @@ import NotFoundError from '../../exceptions/NotFoundError.js';
 const {Pool} = pg;
 
 class AlbumsService {
-  constructor() {
+  constructor(cacheService) {
     this._pool = new Pool();
+    this._cacheService = cacheService;
   }
 
   async addAlbum({name, year}) {
@@ -122,6 +123,8 @@ class AlbumsService {
     } else {
       await this.deleteAlbumLikeById(albumId, userId);
     }
+
+    await this._cacheService.delete(`album-likes:${albumId}`);
   }
 
   async deleteAlbumLikeById(albumId, userId) {
@@ -140,18 +143,33 @@ class AlbumsService {
   }
 
   async getAlbumLikesById(albumId) {
-    const query = {
-      text: 'SELECT COUNT(id) FROM user_album_likes WHERE album_id = $1',
-      values: [albumId],
-    };
+    try {
+      const result = await this._cacheService.get(`album-likes:${albumId}`);
+      const likes = parseInt(result);
+      return {
+        cache: true,
+        likes,
+      };
+    } catch (error) {
+      const query = {
+        text: 'SELECT COUNT(id) FROM user_album_likes WHERE album_id = $1',
+        values: [albumId],
+      };
 
-    const result = await this._pool.query(query);
+      const result = await this._pool.query(query);
 
-    if (!result.rows.length) {
-      throw new NotFoundError('Gagal mengambil like');
+      if (!result.rows.length) {
+        throw new NotFoundError('Gagal mengambil like');
+      }
+
+      const likes = parseInt(result.rows[0].count);
+
+      await this._cacheService.set(`album-likes:${albumId}`, likes);
+      return {
+        cache: false,
+        likes,
+      };
     }
-
-    return parseInt(result.rows[0].count);
   }
 }
 

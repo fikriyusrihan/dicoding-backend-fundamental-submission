@@ -51,9 +51,13 @@ import ExportsValidator from './validator/exports/index.js';
 // Storage Service
 import StorageService from './services/storage/StorageService.js';
 
+// Cache Service
+import CacheService from './services/redis/CacheService.js';
+
 const init = async () => {
+  const cacheSercice = new CacheService();
   const collaborationsService = new CollaborationsService();
-  const albumsService = new AlbumsService();
+  const albumsService = new AlbumsService(cacheSercice);
   const songsService = new SongsService();
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();

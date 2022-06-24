@@ -218,14 +218,18 @@ class AlbumsHandler {
   async getAlbumLikesByIdHandler(request, h) {
     try {
       const {id} = request.params;
-      const likes = await this._albumsService.getAlbumLikesById(id);
+      const {cache, likes} = await this._albumsService.getAlbumLikesById(id);
 
-      return {
+      const response = h.response({
         status: 'success',
         data: {
           likes,
         },
-      };
+      });
+
+      if (cache) response.header('X-Data-Source', 'cache');
+
+      return response;
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
