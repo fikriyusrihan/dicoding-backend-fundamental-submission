@@ -65,14 +65,18 @@ class PlaylistsHandler {
   async getPlaylistsHandler(request, h) {
     try {
       const {id: credentialId} = request.auth.credentials;
-      const playlists = await this._playlistsService.getPlaylists(credentialId);
+      const {cache, playlists} =
+        await this._playlistsService.getPlaylists(credentialId);
 
-      return {
+      const response = h.response({
         status: 'success',
         data: {
           playlists,
         },
-      };
+      });
+
+      if (cache) response.header('X-Data-Source', 'cache');
+      return response;
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
