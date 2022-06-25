@@ -7,8 +7,9 @@ import AuthorizationError from '../../exceptions/AuthorizationError.js';
 const {Pool} = pg;
 
 class CollaborationsService {
-  constructor() {
+  constructor(cacheService) {
     this._pool = new Pool();
+    this._cacheService = cacheService;
   }
 
   async addCollaboration(playlistId, userId) {
@@ -25,6 +26,7 @@ class CollaborationsService {
       throw new InvariantError('Kolaborasi gagal ditambahkan');
     }
 
+    await this._cacheService.delete(`playlist:${userId}`);
     return result.rows[0].id;
   }
 
@@ -41,6 +43,8 @@ class CollaborationsService {
     if (!result.rows.length) {
       throw new InvariantError('Kolaborasi gagal dihapus');
     }
+
+    await this._cacheService.delete(`playlist:${userId}`);
   }
 
   async verifyCollaborator(playlistId, userId) {
