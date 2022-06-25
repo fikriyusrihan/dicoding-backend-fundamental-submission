@@ -17,3 +17,7 @@ This repository is created for sharing, documentation, and education purposes on
     * Node-pg-migrate
     * Database normalization
     * Intro to TDD and API testing with Postman
+* In the third submission:
+    * Message broker using RabbitMQ
+    * Server-side caching using Redis
+    * Upload file to server
